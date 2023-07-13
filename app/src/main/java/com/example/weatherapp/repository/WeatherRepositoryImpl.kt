@@ -18,4 +18,14 @@ class WeatherRepositoryImpl @Inject constructor(
                 CitySearchResult.Failure(e)
             }
         }
+
+    override suspend fun getWeatherDetails(lat: Double, long: Double): WeatherDetailsResult =
+        withContext(ioDispatcher) {
+            try {
+                val response = apiService.getWeatherDetails(lat, long)
+                WeatherDetailsResult.Success(response)
+            } catch (e: Exception) {
+                WeatherDetailsResult.Failure(e)
+            }
+        }
 }

@@ -1,5 +1,7 @@
 package com.example.weatherapp.ui
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,18 +15,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
 import com.example.weatherapp.data.City
 import com.example.weatherapp.databinding.FragmentSearchCityBinding
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SearchCityFragment : Fragment(), RowClickListener {
 
     private lateinit var binding: FragmentSearchCityBinding
-    private val viewModel: WeatherViewModel by viewModels()
+    private val viewModel: SearchCityViewModel by viewModels()
     private val cityListAdapter = CityListAdapter(this@SearchCityFragment)
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
     }
 
     override fun onCreateView(
@@ -63,19 +68,19 @@ class SearchCityFragment : Fragment(), RowClickListener {
             viewModel.result.observe(viewLifecycleOwner) { state ->
                 binding.apply {
                     when (state) {
-                        is WeatherViewModel.UiState.Data -> {
+                        is SearchCityViewModel.UiState.Data -> {
                             progressBar.visibility = View.GONE
                             cityListAdapter.submitList(state.searchDetails)
                         }
-                        WeatherViewModel.UiState.Empty -> {
+                        SearchCityViewModel.UiState.Empty -> {
                             progressBar.visibility = View.GONE
                             cityListAdapter.submitList(emptyList())
                         }
-                        WeatherViewModel.UiState.Failure -> {
+                        SearchCityViewModel.UiState.Failure -> {
                             progressBar.visibility = View.GONE
                         }
-                        WeatherViewModel.UiState.Init,
-                        WeatherViewModel.UiState.Loading -> {
+                        SearchCityViewModel.UiState.Init,
+                        SearchCityViewModel.UiState.Loading -> {
                             progressBar.visibility = View.VISIBLE
                         }
                     }
@@ -84,13 +89,14 @@ class SearchCityFragment : Fragment(), RowClickListener {
         }
     }
 
-    override fun onCityClicked(cityDetails: City) {
+    override fun onCityClicked(city: City) {
+        sharedPreferences.edit().putString("city", Gson().toJson(city)).apply()
         findNavController().navigate(
-            SearchCityFragmentDirections.actionSearchCityToDisplayWeather(cityDetails)
+            SearchCityFragmentDirections.actionSearchCityToDisplayWeather(city)
         )
     }
 }
 
 interface RowClickListener {
-    fun onCityClicked(cityDetails: City)
+    fun onCityClicked(city: City)
 }

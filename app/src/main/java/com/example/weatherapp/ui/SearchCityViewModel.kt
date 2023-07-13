@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WeatherViewModel @Inject constructor(
+class SearchCityViewModel @Inject constructor(
     private val repository: WeatherRepository
 ) : ViewModel() {
     // List of all city search results (up to 5)
