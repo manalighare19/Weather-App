@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Weather</string>
+    <string name="search_hint">Search for a city</string>
+    <string name="display_weather_fragment_title">Display Weather</string>
+    <string name="search_city_fragment_title">Search City</string>
+</resources>
