@@ -13,6 +13,10 @@
         <action
             android:id="@+id/action_displayWeather_to_searchCity"
             app:destination="@id/searchCity" />
+
+        <argument
+            android:name="city"
+            app:argType="com.example.weatherapp.data.City" />
     </fragment>
 
     <fragment

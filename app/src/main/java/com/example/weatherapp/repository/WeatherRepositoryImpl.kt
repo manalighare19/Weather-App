@@ -12,7 +12,7 @@ class WeatherRepositoryImpl @Inject constructor(
     override suspend fun searchCity(query: String): CitySearchResult =
         withContext(ioDispatcher) {
             try {
-                val response = apiService.searchCity(query)
+                val response = apiService.searchCity(("$query,US"))
                 CitySearchResult.Success(response)
             } catch (e: Exception) {
                 CitySearchResult.Failure(e)

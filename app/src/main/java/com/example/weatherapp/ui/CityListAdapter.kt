@@ -8,14 +8,14 @@ import com.example.weatherapp.data.City
 import androidx.recyclerview.widget.DiffUtil
 import com.example.weatherapp.databinding.ItemCityBinding
 
-class CityListAdapter() :
+class CityListAdapter(private val rowClickListener: RowClickListener) :
     ListAdapter<City, CityListAdapter.CityItemViewHolder>(DiffCallback()) {
 
     class CityItemViewHolder(private val binding: ItemCityBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: City) {
-            binding.name.text = data.name
+            binding.name.text = "${data.name}, " + "${data.state}"
 
         }
     }
@@ -32,6 +32,9 @@ class CityListAdapter() :
 
     override fun onBindViewHolder(holder: CityItemViewHolder, position: Int) {
         holder.bind(getItem(position))
+        holder.itemView.setOnClickListener {
+            rowClickListener.onCityClicked(getItem(position))
+        }
     }
 
 

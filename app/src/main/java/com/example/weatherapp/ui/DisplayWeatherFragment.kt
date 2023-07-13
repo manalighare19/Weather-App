@@ -18,7 +18,6 @@ class DisplayWeatherFragment : Fragment() {
 
     private lateinit var binding: FragmentDisplayWeatherBinding
     private val viewModel: WeatherViewModel by viewModels()
-    private val cityListAdapter = CityListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

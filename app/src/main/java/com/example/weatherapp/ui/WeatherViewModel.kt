@@ -20,7 +20,7 @@ class WeatherViewModel @Inject constructor(
     val result: LiveData<UiState> = _result
 
     // Call to @GET("search") which return required list of cities
-    fun searchImages(query: String) {
+    fun searchCity(query: String) {
         viewModelScope.launch {
             _result.value = UiState.Loading
             when (val response = repository.searchCity(query)) {

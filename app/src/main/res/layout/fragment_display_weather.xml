@@ -14,7 +14,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:drawableLeft="@drawable/ic_search"
-        android:text="Search City" />
+        android:drawableTint="@color/white"
+        android:textAllCaps="false"
+        android:text="@string/search_hint" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

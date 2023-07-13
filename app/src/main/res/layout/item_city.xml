@@ -16,8 +16,7 @@
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:maxLines="2"
+            android:layout_margin="4dp"
             android:textColor="@color/black"
             android:textSize="18sp"
             tools:text="City, State " />
