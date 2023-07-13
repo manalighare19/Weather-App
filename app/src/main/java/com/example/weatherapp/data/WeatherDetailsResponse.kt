@@ -6,7 +6,8 @@ data class WeatherDetailsResponse(
     val base: String,
     val timezone: Int,
     val id: Int,
-    val name: String
+    val name: String,
+    val main: Main
 )
 
 data class Coord(
@@ -19,4 +20,16 @@ data class Weather(
     val main: String,
     val description: String,
     val icon: String
+)
+
+
+data class Main(
+    val temp: Double,
+    val temp_max: Double,
+    val temp_min: Double,
+    val feels_like: Double,
+    val grnd_level: Int?,
+    val humidity: Int?,
+    val pressure: Int?,
+    val sea_level: Int?,
 )

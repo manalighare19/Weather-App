@@ -12,7 +12,7 @@ class WeatherRepositoryImpl @Inject constructor(
     override suspend fun searchCity(query: String): CitySearchResult =
         withContext(ioDispatcher) {
             try {
-                val response = apiService.searchCity(("$query,US"))
+                val response = apiService.searchCity(("$query,$US_COUNTRY_CODE"))
                 CitySearchResult.Success(response)
             } catch (e: Exception) {
                 CitySearchResult.Failure(e)
@@ -28,4 +28,8 @@ class WeatherRepositoryImpl @Inject constructor(
                 WeatherDetailsResult.Failure(e)
             }
         }
+
+    companion object {
+        const val US_COUNTRY_CODE = "US"
+    }
 }

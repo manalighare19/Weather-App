@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
 import com.example.weatherapp.data.City
 import com.example.weatherapp.databinding.FragmentSearchCityBinding
+import com.example.weatherapp.ui.viewmodels.SearchCityViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 

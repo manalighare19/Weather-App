@@ -1,10 +1,8 @@
-
 package com.example.weatherapp.ui
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +10,12 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.weatherapp.R
 import com.example.weatherapp.data.City
 import com.example.weatherapp.databinding.FragmentDisplayWeatherBinding
+import com.example.weatherapp.ui.viewmodels.WeatherDetailsViewModel
+import com.example.weatherapp.utils.ImageManager.getImageUrl
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,7 +40,7 @@ class DisplayWeatherFragment : Fragment() {
         (activity as? AppCompatActivity)?.supportActionBar?.title =
             getString(R.string.display_weather_fragment_title)
         // Inflate the layout for this fragment
-        binding =  FragmentDisplayWeatherBinding.inflate(inflater, container, false)
+        binding = FragmentDisplayWeatherBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -57,19 +58,43 @@ class DisplayWeatherFragment : Fragment() {
         cityDetails?.let { viewModel.getWeatherDetails(it) }
 
         viewModel.result.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is WeatherDetailsViewModel.UiState.Data -> {
-                    binding.cityName.text = state.weatherDetails.name
-                }
-                WeatherDetailsViewModel.UiState.Empty -> {
-                    Log.d("Display Weather Fragment", "Empty")
-                }
-                WeatherDetailsViewModel.UiState.Failure -> {
-                    Log.d("Display Weather Fragment", "Failure")
-                }
-                WeatherDetailsViewModel.UiState.Init,
-                WeatherDetailsViewModel.UiState.Loading -> {
-                    Log.d("Display Weather Fragment", "Loading")
+            binding.apply {
+                when (state) {
+                    is WeatherDetailsViewModel.UiState.Data -> {
+                        progressBar.visibility = View.GONE
+                        binding.cityName.text =
+                            getString(R.string.city_format, cityDetails?.name, cityDetails?.state)
+                        binding.cityTemp.text = getString(
+                            R.string.temp_format,
+                            state.weatherDetails.main.temp.toInt().toString()
+                        )
+                        binding.cityTempDesc.text = state.weatherDetails.weather[0].description
+                        Glide.with(requireContext())
+                            .load(getImageUrl(state.weatherDetails.weather[0].icon))
+                            .into(binding.cityTempImage)
+                    }
+                    WeatherDetailsViewModel.UiState.Empty -> {
+                        progressBar.visibility = View.GONE
+                        emptyStateView.apply {
+                            visibility = View.VISIBLE
+                            emptyText.text = getString(R.string.empty_text)
+                            emptyImage.setImageResource(R.drawable.ic_search)
+                        }
+                    }
+                    WeatherDetailsViewModel.UiState.Failure -> {
+                        progressBar.visibility = View.GONE
+                        emptyStateView.apply {
+                            visibility = View.VISIBLE
+                            emptyText.text = getString(R.string.error_text)
+                            emptyImage.setImageResource(R.drawable.ic_error)
+                        }
+                    }
+                    WeatherDetailsViewModel.UiState.Init,
+                    WeatherDetailsViewModel.UiState.Loading -> {
+                        progressBar.visibility = View.VISIBLE
+                        emptyStateView.visibility = View.GONE
+
+                    }
                 }
             }
         }

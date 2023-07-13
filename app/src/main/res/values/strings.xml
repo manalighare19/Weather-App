@@ -3,4 +3,8 @@
     <string name="search_hint">Search for a city</string>
     <string name="display_weather_fragment_title">Display Weather</string>
     <string name="search_city_fragment_title">Search City</string>
+    <string name="city_format">%s, %s</string>
+    <string name="temp_format">%s °F</string>
+    <string name="empty_text">No data to show</string>
+    <string name="error_text">Something went wrong! Check back again later.</string>
 </resources>
